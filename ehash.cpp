@@ -43,6 +43,7 @@ class bucket{
         int getpos(){return position;}
         int getlocdep(){return local_depth;}
         void inclocdep(){++local_depth;}
+        void declocdep(){--local_depth;}
         bool exists(int x){
             for(int i=0;i<=position;i++)
                 if(b[i]==x)
@@ -137,7 +138,29 @@ class ehash{
             }
         void del(int x){
             int loc = x%(1<<global_depth);
-            if(dirs[loc]->exists(x))dirs[loc]->del(x);
+            if(dirs[loc]->exists(x)){
+                //check if bucket is empty
+                if(dirs[loc]->getpos()==0){
+                    //delete pointer to bucket and from list
+                    int x=0;
+                    int prevloc=loc-x/2;
+                    while(x<loc)x<<1;
+                    b.remove(*dirs[loc]);
+                    dirs[loc]=dirs[prevloc];
+                    dirs[loc-x/2]->declocdep();
+                    
+                    //check if dir is duplicate or not in loop
+                    
+                    while(equal(dirs[0], dirs[size/2], dirs[size/2+1])){
+                        size=size>>1;
+                        global_depth--;
+
+                        dirs=(bucket**)realloc(dirs, sizeof(bucket*)*size);
+
+                    }
+                }
+            }
+            
         }
 };
 
