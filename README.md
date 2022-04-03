@@ -1,1 +1,1 @@
-# CS246
+# Extendible Hashing
