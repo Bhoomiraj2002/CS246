@@ -137,7 +137,20 @@ class ehash{
             }
         void del(int x){
             int loc = x%(1<<global_depth);
-            if(dirs[loc]->exists(x))dirs[loc]->del(x);
+            if(dirs[loc]->exists(x)){
+                dirs[loc]->del(x);
+                //check if bucket is empty
+                if(dirs[loc]->getpos()==0){
+                    //delete pointer to bucket and from list
+                    int x=0;
+                    while(x<loc)x<<1;
+                    b.remove(*dirs[loc]);
+                    dirs[loc]=dirs[loc-x/2];
+                    //check if dir is duplicate or not in loop 
+                }
+               
+            }
+
         }
 };
 
