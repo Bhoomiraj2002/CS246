@@ -93,6 +93,7 @@ class ehash{
         void insert(int x){
             int loc = x%(1<<global_depth);
             if(global_depth>=20)return;
+            if(x==0){dirs[0]->insert(0);return;}
             if(!exists(x))
                 if(dirs[loc]->isFull()){
                     bucket* B=dirs[loc];
