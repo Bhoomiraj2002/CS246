@@ -119,11 +119,18 @@ class ehash{
                             dirs[(*(data+i))%size]->insert(*(data+i)); //change this...
                         insert(x);
                     }else{
-                        dirs[loc]->inclocdep();
+                         dirs[loc]->inclocdep();
                         bucket Bnew(B->getlocdep());
                         b.pb(Bnew);
-                        int newloc=(size>>1)+x%(1<<global_depth-1);
-                        dirs[newloc]=&b.back();
+                        int newloc=(1>>B->getlocdep())/2+x%(1<<(global_depth-1));
+                        //if(x==1)cout<<"::"<<newloc<<" "<<loc<<" "<<endl;
+                        int i=newloc;
+                        int inc=(1<<B->getlocdep());
+                        //dirs[newloc]=&b.back();
+                        while(i<size){
+                            if(i<size)dirs[i]=&b.back();
+                            i+=inc;
+                        }
                         //rearrange data
                         bucket Btmp=*B;
                         B->erase();
